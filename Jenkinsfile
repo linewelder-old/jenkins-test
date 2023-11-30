@@ -13,14 +13,14 @@ pipeline {
         stage("build") {
             steps {
                 echo 'Building the app.'
-                dotnet build
+                sh 'dotnet build'
             }
         }
 
         stage("run") {
             steps {
                 echo 'Running the app.'
-                dotnet run
+                sh 'dotnet run'
             }
         }
     }
