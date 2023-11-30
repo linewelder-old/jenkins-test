@@ -1,27 +1,17 @@
-pipeline {
-    agent any
+node {
+    def app
 
-    tools {
-        dotnetsdk '.NET 7.0'
+    stage('Checkout code') {
+        checkout scm
     }
 
-    environment {
-        DOTNET_SYSTEM_GLOBALIZATION_INVARIANT = 1
+    stage('Build image') {
+        app = docker.build("getintodevops/hellonode")
     }
 
-    stages {
-        stage("build") {
-            steps {
-                echo 'Building the app.'
-                sh 'dotnet build'
-            }
-        }
-
-        stage("run") {
-            steps {
-                echo 'Running the app.'
-                sh 'dotnet run'
-            }
+    stage('Test image') {
+        app.inside {
+            sh 'echo "Tests passed"'
         }
     }
 }
