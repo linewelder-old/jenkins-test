@@ -1,20 +1,27 @@
 pipeline {
-  agent any
-  stages {
-    stage("build") {
-      steps {
-        echo 'Building the app.'
-      }
+    agent any
+
+    tools {
+        dotnetsdk '.NET 7.0'
     }
-    stage("test") {
-      steps {
-        echo 'Testing the app.'
-      }
+
+    environment {
+        DOTNET_SYSTEM_GLOBALIZATION_INVARIANT = 1
     }
-    stage("deploy") {
-      steps {
-        echo 'Deploying the app.'
-      }
+
+    stages {
+        stage("build") {
+            steps {
+                echo 'Building the app.'
+                dotnetBuild
+            }
+        }
+
+        stage("run") {
+            steps {
+                echo 'Running the app.'
+                sh 'dotnet run'
+            }
+        }
     }
-  }
 }
